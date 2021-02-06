@@ -1,7 +1,7 @@
 // ==UserScript==
-// @name         BNS - Only One Prefix
+// @name         BNS: Only One Prefix
 // @namespace    https://gabetardy.github.io/
-// @version      0.2
+// @version      0.3
 // @description  Blocks the game from adding too many prefixes to station names.
 // @author       Gabrielium
 // @match        http://jpw.nyc/subway/
