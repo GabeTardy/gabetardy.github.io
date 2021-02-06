@@ -1,7 +1,7 @@
 // ==UserScript==
-// @name         Brand New Subway Fix
+// @name         BNS: Station Road Name Fix
 // @namespace    https://gabetardy.github.io/
-// @version      0.1
+// @version      0.2
 // @description  Very simple (hacky) fix for broken station names in BNS
 // @author       Gabrielium
 // @match        http://jpw.nyc/subway/
