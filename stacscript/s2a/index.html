@@ -1,0 +1,35 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<title>s2a</title>
+		<style>
+			textarea{
+				position: absolute;
+				top: 5%;
+				left: 5%;
+				width: 90%;
+				height: 40%;
+			}
+			button#submit{
+				position: absolute;
+				top: 50%;
+				left: 5%;
+				width: 25%;
+				height: 10%;
+			}
+		</style>
+	</head>
+	<body>
+		<div><textarea id="input"></textarea></div>
+		<button id="submit">Generate CSV</button>
+		
+		<script type="text/javascript" src="../s2a.js"
+		<script type="text/javascript">
+			var input = document.getElementById("input");
+			var submit = document.getElementById("submit");
+			submit.addEventListener("click", () => {
+				s2a(input.value);
+			});
+		</script>
+	</body>
+</html>
