@@ -37,7 +37,7 @@ function s2a(input, threshhold){
   }
   //var k = 0;
   //for(var classroom in classrooms){
-  var classKeys = Object.keys(classroom).sort();
+  var classKeys = Object.keys(classrooms).sort();
   console.log(classKeys);
   
   for(var _cls = 0; _cls < classKeys.length; _cls++){
