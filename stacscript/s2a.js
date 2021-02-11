@@ -35,7 +35,13 @@ function s2a(input, threshhold){
       }
   }
   //var k = 0;
-  for(var classroom in classrooms){
+  //for(var classroom in classrooms){
+  var classKeys = Object.keys(classroom).sort();
+  console.log(classKeys);
+  
+  for(var _cls = 0; _cls < classKeys.length; _cls++){
+      classroom = classKeys[_cls];
+    
       //if(k++ > 20) break;
       for(var _day in classrooms[classroom].locked){
           var day = classrooms[classroom].locked[_day];
