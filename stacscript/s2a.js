@@ -1,5 +1,5 @@
 function s2a(input, threshhold){
-  var threshhold = 10;
+  threshhold = threshhold || 10;
   var csvText = "";
   var times = input.split("\n");
 
