@@ -7,6 +7,7 @@ function s2a(input, threshhold){
 
   for(var i = 0; i < times.length; i++){
       times[i] = times[i].split("\t");
+      if(times.length < 4) continue;
       times[i][1] = times[i][1].split(/:| /gim);
       var dsc = times[i][1].pop();
       times[i][1][0] = times[i][1][0]*1 + (dsc == "PM" && times[i][1][0] != 12 ? 12 : (times[i][1][0] == 12 && dsc == "AM" ? -12 : 0));
