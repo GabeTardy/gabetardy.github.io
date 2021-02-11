@@ -12,6 +12,13 @@
 			}
 			button#submit{
 				position: absolute;
+				top: 60%;
+				left: 5%;
+				width: 25%;
+				height: 10%;
+			}
+			input#tolerance{
+				position: absolute;
 				top: 50%;
 				left: 5%;
 				width: 25%;
@@ -21,6 +28,7 @@
 	</head>
 	<body>
 		<div><textarea id="input"></textarea></div>
+		<input id="tolerance" placeholder="Tolerance (10/default)">
 		<button id="submit">Generate CSV</button>
 		
 		<script type="text/javascript" src="../s2a.js"></script>
