@@ -6,7 +6,7 @@ if(!(c[q][0].match("Inventory") || c[q][0] == "" || c[q][3].trim() != "")){
 
     var cq0;
     if(c[q][2] != "" && c[q][0].toLowerCase().match(c[q][2].toLowerCase()))
-        cq0 = c[q][0].replace(new RegExp(c[q][2], 'gim'), "").trim();
+        cq0 = c[q][0].replace(new RegExp(c[q][2], 'im'), "").trim();
     else cq0 = c[q][0];
     c[q][3] = cq0;
 }
