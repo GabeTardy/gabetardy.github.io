@@ -48,6 +48,27 @@ Function Parse-InventoryTypeData-STACScript
 		$manufacturer = "" # $row_data[4]
 		$model = "" # $row_data[5]
 		
+		# Special overrides
+		if($inventory_type.toLower().Contains("usb hub"))
+		{
+			$manufacturer = "Sabrent"
+		}
+		else if($inventory_type.toLower().Contains("sharing switch") -or $inventory_type.toLower().Contains("usb switch"))
+		{
+			$manufacturer = "Sabrent"
+			$model = "USB-SW20"
+		}
+		else if($inventory_type.toLower().Contains("ipevo"))
+		{
+			$manufacturer = "IPEVO"
+			$model = "VZR-RHDMI"
+		}
+		else if($inventory_type.toLower().Contains("polycom") -and $inventory_type.toLower().Contains("camera"))
+		{
+			$manufacturer = "Poly"
+			$model = "Poly Studio"
+		}
+		
 		<# Guess manufacturer (if not given) #>
 		if($manufacturer -eq "")
 		{
