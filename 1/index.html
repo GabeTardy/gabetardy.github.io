@@ -42,6 +42,7 @@ if(!$DriverFound) { "Lenovo SU not found. It is likely not available for this de
    var btn = document.getElementById("i");
    var code = document.getElementById("code");
    btn.addEventListener("click", ()=>{
-      navigator.clipboard.writeText("test")
+      navigator.clipboard.writeText(code.textContent)
+      console.log("done");
    });
 </script>
