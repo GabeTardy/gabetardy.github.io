@@ -61,7 +61,7 @@ class StationComplex {
     }
 
     AddSubstation($ipi){
-        AddSubstation($ipi, $false)
+        $this.AddSubstation($ipi, $false)
     }
 
     AddSubstation($incitingPlatformID, $default){
@@ -69,9 +69,7 @@ class StationComplex {
         $NSS.Default = $true
 
         $this.SubStations += $NSS
-        if($incitingPlatformID -ne $null) { $this.AddSubstation($incitingPlatformID, $this.SubStations.Count - 1) }
-
-        
+        # if($incitingPlatformID -ne $null) { $this.AddPlatform($incitingPlatformID, $this.SubStations.Count - 1) }
     }
 
     AddPlatform($platform_id){
@@ -81,11 +79,10 @@ class StationComplex {
     AddPlatform($platform_id, $substation_id){
         if($this.SubStations[$substation_id] -eq $null){
             $this.AddSubstation($platform_id)
-        }else{
-            $this.SubStations[$substation_id].AddPlatform($platform_id)
-            $global:PlatformsToStationsMap[$platform_id] = $this.ID
         }
 
+        $this.SubStations[$substation_id].AddPlatform($platform_id)
+        $global:PlatformsToStationsMap[$platform_id] = $this.ID
     }
 
     MergeWithStation($_mode, $id_of_station_to_merge_with){
@@ -98,15 +95,30 @@ class StationComplex {
 
 class LineStop {
     $OutboundInboundBoth <# 0, 1, 2 respectively #>
-    $WhichPlatform
+    $OutboundPlatform
+    $InboundPlatform
     $StationID
     $StationLiteral
+    $StationName
 
-    LineStop($OIB, $_which, $_id){
+    LineStop($PlatformArray){
+        $this.OutboundPlatform = $PlatformArray[0];
+        $this.InboundPlatform = $PlatformArray[1];
+
+        if($this.InboundPlatform -eq 0){
+            $OIB = 0
+            $this.StationID = $global:PlatformsToStationsMap[$this.OutboundPlatform];
+        }elseif($this.OutboundPlatform -eq 0){
+            $OIB = 1
+            $this.StationID = $global:PlatformsToStationsMap[$this.InboundPlatform];
+        }else{
+            $OIB = 2
+            $this.StationID = $global:PlatformsToStationsMap[$this.OutboundPlatform];
+        }
+        
         $this.OutboundInboundBoth = $OIB
-        $this.WhichPlatform = $_which
-        $this.StationID = $_id
         $this.StationLiteral = $global:StationComplexList[$this.StationID];
+        $this.StationName = $this.StationLiteral.SubStations | Where-Object -FilterScript {$_.
     }
 
     [string]ToString(){
@@ -161,59 +173,57 @@ class Line {
             $this.InboundTerminus = 0;
         }
 
-        $Station = $global:PlatformsToStationsMap[$this.StationListRaw[$this.InboundTerminus]];
-        $NewLineStop = [LineStop]::new(2, $this.StationListRaw[$this.InboundTerminus], $Station)
-        $this.StationList += $NewLineStop
+        $this.StationList += [LineStop]::new(@($this.StationListRaw[$this.InboundTerminus], $this.StationListRaw[$this.InboundTerminus]))
 
         $Outbound = $this.StationListRaw[1..($this.OutboundTerminus-1)];
         $Inbound = $this.StationListRaw[($this.StationListRaw.Count-1)..($this.OutboundTerminus+1)]; <# Inbound array is flipped !!!!! #>
 
         $idx_outbound = 0
         $idx_inbound = 0
-        $last_found_idx = 0
+        $start_idx = 0
+
+        $psm = $global:PlatformsToStationsMap # shorthand
+
         while($idx_inbound -lt $Inbound.Count){
-            "(" + $Outbound[$idx_outbound] + "), " + "(" + $Inbound[$idx_inbound] + ")" | Out-Host
-            ((Get-Sta($Outbound[$idx_outbound])).Name + "(" + $Outbound[$idx_outbound] + "), " + (Get-Sta($Inbound[$idx_inbound])).Name) + "(" + $Inbound[$idx_inbound] + ")" | Out-Host
-            if($global:PlatformsToStationsMap[$Inbound[$idx_inbound]] -ne $global:PlatformsToStationsMap[$Outbound[$idx_outbound]]){
-                if($idx_outbound -eq $Outbound.Count - 1){
-                    "hi" | Out-Host
-                    <# This station must be inbound-only since it is not found in the outbound array. #>
-                    $Station = $global:PlatformsToStationsMap[$Inbound[$idx_inbound]]
-                    $NewLineStop = [LineStop]::new(1, $Inbound[$idx_inbound], $Station)
-                    $this.StationList += $NewLineStop
-                    $idx_inbound++
-                    $idx_outbound = $last_found_idx + 1
-                }
-                $idx_outbound++
-            }else{
-                <# Both directions! They are equal. Now let's fill in the gaps. #>
-                for($catchup = $last_found_idx + 1; $catchup -lt $idx_outbound; $catchup++){
-                    $Outbound[$catchup] | Out-Host
-                    $Station = $global:PlatformsToStationsMap[$Outbound[$catchup]]
-                    $NewLineStop = [LineStop]::new(0, $Outbound[$catchup], $Station);
-                    $this.StationList += $NewLineStop
-                }
-
-                $Station = $global:PlatformsToStationsMap[$Inbound[$idx_inbound]]
-                $NewLineStop = [LineStop]::new(2, $Inbound[$idx_inbound], $Station)
-                $this.StationList += $NewLineStop
-                $last_found_idx = $idx_outbound
-                $idx_inbound++
-
-                if($last_found_idx -eq $Outbound.Count - 1){
-                    for($proceed = $idx_inbound; $proceed -lt $Inbound.Count; $proceed++){
-                        $Station = $global:PlatformsToStationsMap[$Inbound[$idx_inbound]]
-                        $NewLineStop = [LineStop]::new(1, $Inbound[$idx_inbound], $Station)
-                        $this.StationList += $NewLineStop
-                        $idx_inbound++
+            $OB = $Outbound[$idx_outbound]
+            $IB = $Inbound[$idx_inbound]
+            "Testing $OB, $IB" | Out-Host
+            
+            if($psm[$OB] -eq $psm[$IB]){
+                # Add missing outbound stops
+                if($start_idx -ne $idx_outbound){
+                    for($i = $start_idx; $i -lt $idx_outbound; $i++){
+                        $this.StationList += [LineStop]::new(@($Outbound[$i], 0));
                     }
+                }
+
+                # Add this stop
+                $this.StationList += [LineStop]::new(@($OB, $IB));
+
+                # If no more possible outbound matches (namely, next outbound element is null) then terminate the selection by adding all remaining inbound stations as I's. #>
+                if($Outbound[$idx_outbound+1] -eq $null -and $Inbound[$idx_inbound+1] -ne $null){
+                    "No more possible outbound matches. Backfilling..." | Out-Host
+                    while($idx_inbound+1 -lt $Inbound.Count){
+                        $this.StationList += [LineStop]::new(@(0, $Inbound[$idx_inbound+1]))
+                        $idx_inbound++;
+                    }
+                }
+
+                $idx_inbound++;
+                $idx_outbound++;
+                $start_idx = $idx_outbound;
+            } else {
+                $idx_outbound++;
+
+                if($Outbound[$idx_outbound] -eq $null){
+                    $this.StationList += [LineStop]::new(@(0, $Inbound[$idx_inbound]))
+                    $idx_outbound = $start_idx;
+                    $idx_inbound++;
                 }
             }
         }
 
-        $Station = $global:PlatformsToStationsMap[$this.StationListRaw[$this.OutboundTerminus]];
-        $NewLineStop = [LineStop]::new(2, $this.StationListRaw[$this.OutboundTerminus], $Station)
-        $this.StationList += $NewLineStop
+        $this.StationList += [LineStop]::new(@($this.StationListRaw[$this.OutboundTerminus], $this.StationListRaw[$this.OutboundTerminus]))
     }
 }
 
@@ -258,6 +268,8 @@ function Map-PlatformsToStations(){
 }
 
 function Get-Sta($plat){
+    if($plat -eq $null){ return 0; }
+
     return $StationComplexList[$PlatformsToStationsMap[$plat]];
 }
 
@@ -289,7 +301,7 @@ $StationComplexList += $ComplexExample
 
 
 $LinesList += [Line]::new("Line 1", @(32, 2305, 25516, 6215, 64, 8441, 2918, 26442), 2, 6)
-$LinesList += [Line]::new("Line 2", @(29181, 25901, 1648, 1, 128, 31, 26448), 0, 3)
+$LinesList += [Line]::new("Line 2", @(29181, 25901, 1648, 1, 128, 31, 26448), 0, 4)
 
 $idx = 0;
 $StationComplexList | Format-Table -Property @{name="Index";expression={$global:idx;$global:idx+=1}}, Name, SubStations, Mode, AnnouncementStyles, DeleteMetadata
