@@ -32,7 +32,7 @@ for($i = 0; $i -lt $Files.Count; $i++){
   if(($Files[$i].Name -match "Lenovo System Update") -and ($Files[$i].URL -match ".exe")){
     ("Successfully found most recent version of Lenovo SU! (" + $Files[$i].Version + ")") | Out-Host
     
-    $FN = "~\Downloads\" + ([System.IO.Path]::GetFileName($Files[$i].URL))
+    $FN = [Environment]::GetFolderPath("userprofile") + "\Downloads\" + ([System.IO.Path]::GetFileName($Files[$i].URL))
     if(Test-Path $FN){
       "Most recent version of Lenovo SU already downloaded to client machine. Running..." | Out-Host
       & $FN
