@@ -1,0 +1,59 @@
+<input type="button" value="copy" id="i">
+<pre id="code">
+$plans = (Get-WmiObject -Class win32_powerplan -Namespace root\cimv2\power);
+ForEach ($plan in $plans){
+    $planGuid = $plan.instanceID.Substring(21, 36);
+
+    powercfg -setacvalueindex $planGuid SUB_BUTTONS LIDACTION 0
+    powercfg -setdcvalueindex $planGuid SUB_BUTTONS LIDACTION 0
+}
+
+("Fixed lid actions.") | Out-Host
+
+$SN = Get-WmiObject win32_bios | Select-Object -expand Serialnumber
+("Computer serial: " + $SN) | Out-Host
+
+$LenovoResponseRAW = (Invoke-WebRequest -Uri ("https://pcsupport.lenovo.com/us/en/api/v4/mse/getserial?productId=" + $SN) -UseBasicParsing)
+$LenovoResponse = $LenovoResponseRAW | ConvertFrom-Json
+
+if(($LenovoResponse.Id -eq "") -or ($LenovoResponseRAW.RawContentLength -eq 2)){
+   ("Malformed request generated. Lenovo System Update is likely not available for this device.") | Out-Host
+   return;
+}
+("Product code: " + $LenovoResponse.Id) | Out-Host
+   
+$DriverResponse = (Invoke-WebRequest -Uri ("https://pcsupport.lenovo.com/us/en/api/v4/downloads/drivers?productId=" + $LenovoResponse.Id) -UseBasicParsing) | ConvertFrom-Json
+("Received list of downloads, length is " + $DriverResponse.body.DownloadItems.Files.Count) | Out-Host
+
+$Files = $DriverResponse.body.DownloadItems.Files
+$DriverFound = $false
+
+for($i = 0; $i -lt $Files.Count; $i++){
+  if(($Files[$i].Name -match "Lenovo System Update") -and ($Files[$i].URL -match ".exe")){
+    ("Successfully found most recent version of Lenovo SU! (" + $Files[$i].Version + ")") | Out-Host
+    
+    $FN = "~\Downloads\" + ([System.IO.Path]::GetFileName($Files[$i].URL))
+    if(Test-Path $FN){
+      "Most recent version of Lenovo SU already downloaded to client machine. Running..." | Out-Host
+      & $FN
+    } else {
+      (New-Object System.Net.WebClient).DownloadFile($Files[$i].URL, $FN)
+      "Downloaded to `"" + $FN + "`". Running..." | Out-Host
+      & $FN
+    }
+    
+    $DriverFound = $true
+    return;
+  }
+}
+
+if(!$DriverFound) { "Lenovo SU not found. It is likely not available for this device. Please search manually." | Out-Host }
+</pre>
+<script>
+   var btn = document.getElementById("i");
+   var code = document.getElementById("code");
+   btn.addEventListener("click", ()=>{
+      navigator.clipboard.writeText(code.textContent)
+      console.log("done");
+   });
+</script>
