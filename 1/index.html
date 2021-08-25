@@ -1,10 +1,11 @@
 <input type="button" value="copy" id="i">
 <pre id="code">
 $SN = Get-WmiObject win32_bios | Select-Object -expand Serialnumber
-<#$SN = "A26E512" <# Not a proper serial #>#>
 ("Computer serial: " + $SN) | Out-Host
+
 $LenovoResponseRAW = (Invoke-WebRequest -Uri ("https://pcsupport.lenovo.com/us/en/api/v4/mse/getserial?productId=" + $SN) -UseBasicParsing)
 $LenovoResponse = $LenovoResponseRAW | ConvertFrom-Json
+
 if(($LenovoResponse.Id -eq "") -or ($LenovoResponseRAW.RawContentLength -eq 2)){
    ("Malformed request generated. Lenovo System Update is likely not available for this device.") | Out-Host
    return;
@@ -18,10 +19,10 @@ $Files = $DriverResponse.body.DownloadItems.Files
 $DriverFound = $false
 
 for($i = 0; $i -lt $Files.Count; $i++){
-  if($Files[$i].Name -match "Lenovo System Update"){
+  if(($Files[$i].Name -match "Lenovo System Update") -and ($Files[$i].URL -match ".exe")){
     ("Successfully found most recent version of Lenovo SU! (" + $Files[$i].Version + ")") | Out-Host
     
-    $FN = "Downloads\" + ([System.IO.Path]::GetFileName($Files[$i].URL))
+    $FN = "~\Downloads\" + ([System.IO.Path]::GetFileName($Files[$i].URL))
     if(Test-Path $FN){
       "Most recent version of Lenovo SU already downloaded to client machine. Running..." | Out-Host
       & $FN
