@@ -1,5 +1,7 @@
 <input type="button" value="copy" id="i">
 <pre id="code">
+Start-Process C:\Windows\CCM\SCClient.exe -WindowStyle Minimized
+
 $SN = Get-WmiObject win32_bios | Select-Object -expand Serialnumber
 ("Computer serial: " + $SN) | Out-Host
 
