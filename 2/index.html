@@ -1,5 +1,7 @@
 <input type="button" value="copy" id="i">
 <pre id="code">
+Start-Process C:\Windows\CCM\SCClient.exe -WindowStyle Minimized
+
 $plans = (Get-WmiObject -Class win32_powerplan -Namespace root\cimv2\power);
 ForEach ($plan in $plans){
     $planGuid = $plan.instanceID.Substring(21, 36);
