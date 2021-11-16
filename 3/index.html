@@ -1,0 +1,32 @@
+<input type="button" value="copy" id="i">
+<pre id="code">
+# get all power plans
+$plans = (Get-WmiObject -Class win32_powerplan -Namespace root\cimv2\power);
+
+# iterate over power plans and get their guids
+ForEach ($plan in $plans){
+    $planGuid = $plan.instanceID.Substring(21, 36);
+
+    # invoke powercfg.exe to set specific values for certain actions (thankfully there are aliases for
+    # other guids)
+    #
+    # also, ac = connected to power, dc = on battery
+
+    # fix lid actions
+    powercfg /setacvalueindex $planGuid SUB_BUTTONS LIDACTION 0
+    powercfg /setdcvalueindex $planGuid SUB_BUTTONS LIDACTION 0
+    
+    # fix timeout time (the laptop should turn off in 1h, therefore 3600 seconds.)
+    powercfg /setdcvalueindex $planGuid SUB_SLEEP STANDBYIDLE 3600
+}
+
+("Complete") | Out-Host
+</pre>
+<script>
+   var btn = document.getElementById("i");
+   var code = document.getElementById("code");
+   btn.addEventListener("click", ()=>{
+      navigator.clipboard.writeText(code.textContent)
+      console.log("done");
+   });
+</script>
