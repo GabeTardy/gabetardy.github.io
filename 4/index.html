@@ -1,0 +1,40 @@
+<!DOCTYPE HTML>
+<html>
+  <head>
+    <title>maple error fixer</title>
+    <style>
+      *{
+        font-family: "Comic Sans MS", "Comic Sans", handwriting;
+        color: white;
+      }
+      html{
+        background: linear-gradient(27deg, rgba(255,0,0,1) 0%, rgba(255,111,0,1) 14%, rgba(255,247,0,1) 23%, rgba(86,255,0,1) 35%, rgba(0,255,210,1) 43%, rgba(0,112,255,1) 56%, rgba(55,0,255,1) 65%, rgba(201,0,255,1) 74%, rgba(251,0,255,1) 81%, rgba(255,0,125,1) 90%, rgba(255,0,0,1) 100%, rgba(0,212,255,1) 100%);
+      }
+      textarea{
+        background: black;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Maple Error Fixer</h1>
+    <h2>Because no one wants to declare all those variables</h2>
+    <textarea id="hello" placeholder="error here pls"></textarea>
+    <button type="button" id="submit">submit lol</button>
+    <textarea id="hello2" disabled></textarea>
+    <script type="text/javascript">
+      document.getElementById("submit").addEventListener("click", () => {
+        var l = document.getElementById("hello").value;
+        var k = l.split("`");
+        var j = [];
+        for(var i = 0; i < k.length; i++){
+            if(!k[i].includes("Warning") && !k[i].includes("local")){
+                j.push(k[i]);
+            }
+        }
+        console.log(j);
+        var m = "local " + j.toString().replace(/\[|\]/gim, '').replace(/,/gim, ", ") + ";";
+        document.getElementById("hello2").value = m;
+      });
+    </script>
+  </body>
+</html>
