@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Mechanical APDL Database Search
 // @namespace    http://gabetardy.github.io/
-// @version      1.3
+// @version      1.31
 // @description  allows user to search APDL database for specific command
 // @author       Gabriel Tardy
 // @match        https://www.mm.bme.hu/~gyebro/files/ans_help_v182/ans_cmd/Hlp_C_CmdTOC.html
@@ -13,7 +13,7 @@
     'use strict';
 
     var l = document.createElement("header");
-    l.innerHTML = `<input type="text" placeholder="Search database..." id="searchTool" oninput="filterAPDL()">&nbsp;<input type="checkbox" id="titleToggle" checked><span>Titles</span>&nbsp;<input type="checkbox" id="descToggle" checked><span>Descriptions</span><span style="float:right">APDL Database Search 1.3 - <a href="https://gabetardy.github.io/files/apdl.user.js">Check for Updates/Reinstall</a></span>`;
+    l.innerHTML = `<input type="text" placeholder="Search database..." id="searchTool" oninput="filterAPDL()">&nbsp;<input type="checkbox" id="titleToggle" checked><span>Titles</span>&nbsp;<input type="checkbox" id="descToggle" checked><span>Descriptions</span><span style="float:right">APDL Database Search 1.31 - <a href="https://gabetardy.github.io/files/apdl.user.js">Check for Updates/Reinstall</a></span>`;
     l.style.background = '#fafafa';
     l.style.padding = "1em";
 
@@ -32,7 +32,7 @@
         var matchString = st.value;
         var titleToggle = tt.checked;
         var descToggle = dt.checked;
-        var matchRegExp = new RegExp(matchString, "gim");
+        var matchRegExp = new RegExp(matchString.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), "gim"); // Escape code "borrowed" from https://stackoverflow.com/questions/3446170/escape-string-for-use-in-javascript-regex
 
         for(var i = 0; i <= 4; i++){
             document.getElementsByTagName("dl")[0].children[i].style.display = matchString == "" ? "block" : "none";
