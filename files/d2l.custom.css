@@ -1,0 +1,10 @@
+th.d_gn {
+    opacity: 0.5;
+    filter: blur(5px);
+    transition: all 0.5s;
+}
+
+th.d_gn:hover{
+    opacity: 1;
+    filter: blur(0);
+}
