@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 96 96" width="96px" height="96px" xmlns:bx="https://boxy-svg.com">
+  <defs>
+    <bx:export>
+      <bx:file format="png" path="favicon.png"/>
+    </bx:export>
+  </defs>
+  <rect width="96" height="96" style="opacity: 0.9; fill: rgb(0, 43, 54);" rx="20.651" ry="20.651"/>
+  <text style="fill: rgb(131, 148, 150); font-family: Inconsolata; font-size: 78px; font-weight: 700; text-anchor: middle; white-space: pre;" x="48" y="74.163">GT</text>
+</svg>

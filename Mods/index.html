@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8"/>
+    <title>Gabe Tardy: Mods</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inconsolata:wght@200..900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="/gabetardy.css">
+    <link rel="shortcut icon" type="image/png" href="/favicon.png">
+</head>
+<body>
+    <header id="mainHeader">
+        <div id="splash">
+            <a id="home" href="/"><span id="headerName">GabeTardy</span><span>.github.io</span></a>
+        </div>
+        <nav id="nav">
+            [ Work:
+            <a href="/MS">MS</a>
+            •
+            <a href="/PhD">PhD</a>
+            •
+            <a href="/misc">Misc</a>
+            •
+            <a href="/index">Index</a>]
+            &nbsp;•
+            <a href="/mods" class="isCurrentPage">Mods</a>
+            •
+            <a href="/teaching">Teaching</a>
+        </nav>
+    </header>
+    <div id="content">
+        <h1>Mods: Brand New Subway</h1>
+        <p>These mods are for the <a href="https://jpwright.github.io/subway/">Brand New Subway</a> game by Jason Wright. They fix some small issues that existed in the game (which may have been fixed independently within the game itself). These mods may or may not work anymore as I have not tried the game in some time.</p>
+        <div class="scriptHolder">
+            <div class="script">
+                <div class="scriptHeader">
+                    <span class="scriptFilename">bns-noboroughs.user.js</span> •
+                    <span class="scriptName">Brand New Subway: No Borough Label</span>
+                </div>
+                <div class="scriptBody">
+                    Fixes every name being prefixed with the borough if it isn't in Manhattan.
+
+                    <br><br> Requires Tampermonkey.
+                    
+                    <br><br> <a href="Files/bns-noboroughs.user.js">View Raw / Install</a>
+                </div>
+            </div>
+
+            <div class="script">
+                <div class="scriptHeader">
+                    <span class="scriptFilename">bns-nodupe.user.js</span> •
+                    <span class="scriptName">Brand New Subway: Only One Prefix</span>
+                </div>
+                <div class="scriptBody">
+                    Blocks the game from adding too many prefixes to station names.
+
+                    <br><br> Requires Tampermonkey.
+                    
+                    <br><br> <a href="Files/bns-noboroughs.user.js">View Raw / Install</a>
+                </div>
+            </div>
+
+            <div class="script">
+                <div class="scriptHeader">
+                    <span class="scriptFilename">bns.user.js</span> •
+                    <span class="scriptName">Brand New Subway: Station Road Name Fix</span>
+                </div>
+                <div class="scriptBody">
+                    Very simple (hacky) fix for broken station names in BNS.
+
+                    <br><br> Requires Tampermonkey.
+                    
+                    <br><br> <a href="Files/bns.user.js">View Raw / Install</a>
+                </div>
+            </div>
+        </div>
+
+        <h1>Mods: D2L</h1>
+        <p> Not traditional mods by any means, but these are some scripts I wrote to make D2L (Desire2Learn) more usable for grader teaching assistants. I am not sure if these work on all D2L installations or just that which is used by Tennessee Tech, so use these at your own risk.</p>
+        <p>If you are looking for other improvements, I strongly recommend the excellent <a href="https://github.com/chrismooredev/d2l-tweaks">d2l-tweaks</a> script written by Chris Moore. I also use a modified version of <a href="https://greasyfork.org/en/scripts/402917-brightspace-grade-view">BrightSpace Grade View</a> by Cengiz Gunay for grading.</p>
+        <div class="scriptHolder">
+            <div class="script">
+                <div class="scriptHeader">
+                    <span class="scriptFilename">d2l.user.js</span> •
+                    <span class="scriptName">D2L: Enter Advances Student</span>
+                </div>
+                <div class="scriptBody">
+                    While the cursor is in an input box in the "Enter Grades" view, hitting enter progresses to the next student's input box.
+
+                    <br><br> Requires Tampermonkey.
+                    
+                    <br><br> <a href="Files/d2l.user.js">View Raw / Install</a>
+                </div>
+            </div>
+
+            <div class="script">
+                <div class="scriptHeader">
+                    <span class="scriptFilename">d2ladvance.user.js</span> •
+                    <span class="scriptName">D2L: Save Draft and Advance Student</span>
+                </div>
+                <div class="scriptBody">
+                    Merges the "Save Draft" and "Advance Student" buttons into one button that saves annotation drafts as normal and then advances to the next student.
+
+                    <br><br> Requires Tampermonkey.
+                    
+                    <br><br> <a href="Files/bns-noboroughs.user.js">View Raw / Install</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

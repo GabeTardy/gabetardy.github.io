@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8"/>
+    <title>Gabe Tardy: MS</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inconsolata:wght@200..900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="/gabetardy.css">
+    <link rel="shortcut icon" type="image/png" href="/favicon.png">
+</head>
+<body>
+    <header id="mainHeader">
+        <div id="splash">
+            <a id="home" href="/"><span id="headerName">GabeTardy</span><span>.github.io</span></a>
+        </div>
+        <nav id="nav">
+            [ Work:
+            <a href="/MS" class="isCurrentPage">MS</a>
+            •
+            <a href="/PhD">PhD</a>
+            •
+            <a href="/misc">Misc</a>
+            •
+            <a href="/index">Index</a>]
+            &nbsp;•
+            <a href="/mods">Mods</a>
+            •
+            <a href="/teaching">Teaching</a>
+        </nav>
+    </header>
+    <div id="content">
+        <h1>Main Project Introduction</h1>
+        <p>My reseearch is concerned with snap-through buckling of shallow sinusoidal arches under sinusoidal loading, a problem which has been explored in great depth in previous literature due to having an exact solution. However, special cases involving specialized or complicated material models have barely been explored. My research seeks to rectify this issue for viscoelastic (stress-relaxing over time) and bimodulus (different tensile/compressive linear elastic behavior) materials.</p>
+
+        <h1>Main Project Media</h1>
+        <div class="videoContainer">
+            <iframe src="https://www.youtube.com/embed/cp6d1qSu18w?si=NaDxXLRz19w0aktA&rel=0" title="YouTube video player" frameborder="0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+        </div>
+        <br>
+
+        <h1>Main Project Code</h1>
+        <div class="scriptHolder">
+            <div class="script" name="usermat">
+                <div class="scriptHeader">
+                    <span class="scriptFilename">usermat.F</span> •
+                    <span class="scriptName">M. APDL Bimodulus Material Model</span>
+                </div>
+                <div class="scriptBody">
+                    This fortran code implements a bimodulus material model for Ansys Mechanical APDL. Specifically, it currently implements a first-invariant-toggled discontinuous linear isotropic material with two Young's moduli and Poisson's ratios. In one dimension, this method reduces to that of Timoshenko 1930 (Strength of Materials Part II - Advanced Theory and Problems); in higher dimensions this method reduces to that proposed by Shapiro 1966 (Deformation of bodies with different tensile and compressive strengths). <span class="b">This script is a hard requirement for any of my macros referencing bimodulus materials.</span> The compatibility of this code with other material models is unknown.
+
+                    <br><br>A complete explanation of how to install this user material can be found in my thesis, Appendix C.
+                    
+                    <br><br> <a href="https://github.com/GabeTardy/MS-APDL-Macros/blob/main/usermat.F">View in Repository</a>
+                </div>
+            </div>
+
+            <div class="script" name="setBimod">
+                <div class="scriptHeader">
+                    <span class="scriptFilename">setBimod.mac</span> •
+                    <span class="scriptName">Use Bimodulus Material</span>
+                </div>
+                <div class="scriptBody">
+                    This code is a shorthand for a more complicated and wordy material definition that is typically used for user materials. <span class="b">This script is a hard requirement for any of my macros referencing bimodulus materials.</span>
+                    
+                    <br><br> <a href="https://github.com/GabeTardy/MS-APDL-Macros/blob/main/setBimod.mac">View in Repository</a>
+                </div>
+            </div>
+        </div>
+
+        <h1>Macros: Meta</h1>
+        <div class="scriptHolder">
+            <div class="script" name="rs">
+                <div class="scriptHeader">
+                    <span class="scriptFilename">rs.mac</span> •
+                    <span class="scriptName">Reset APDL</span>
+                </div>
+                <div class="scriptBody">
+                    This macro resets the APDL environment and applies some configuration variables, and is meant to be run before any new analysis. <span class="b">This script is a hard requirement for all of my other macros.</span>
+                    
+                    <br><br> <a href="https://github.com/GabeTardy/MS-APDL-Macros/blob/main/rs.mac">View in Repository</a>
+                </div>
+            </div>
+        </div>
+        <p>More scripts forthcoming as I further organize my work.</p>
+    </div>
+</body>
+</html>
